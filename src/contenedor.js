@@ -8,6 +8,7 @@ class Contenedor {
 	constructor(ruta) {
 		this.ruta = ruta;
 		this.productos = [];
+		this.carritos = [];
 	}
 	async getAll() {
 		try {
@@ -32,7 +33,7 @@ class Contenedor {
 			if (isEmptyObject(this.productos)) {
 				producto.id = 1;
 			} else {
-				producto.id = this.productos.length + 1;
+				producto.id = this.productos[this.productos.length - 1].id + 1;
 			}
 			this.productos.push(producto);
 			await fs.promises.writeFile(
@@ -93,5 +94,48 @@ class Contenedor {
 			return null;
 		}
 	};
+	async saveCart() {
+		console.log("SaveCart");
+		let carrito = {};
+		try {
+			this.carritos = await this.getAll();
+			if (isEmptyObject(this.carritos)) {
+				carrito.id = 1;
+				(carrito.timestamp = Date.now()), (carrito.productos = []);
+			} else {
+				console.log("thiscarro", this.carritos);
+				(carrito.id = this.carritos[this.carritos.length - 1].id + 1),
+					(carrito.timestamp = Date.now()),
+					(carrito.productos = []);
+			}
+			this.carritos.push(carrito);
+			await fs.promises.writeFile(
+				this.ruta,
+				JSON.stringify(this.carritos, null, 2)
+			);
+			return carrito;
+		} catch (error) {
+			return null;
+		}
+	}
+
+	addProduct = async (id, newProduct) => {
+		let lista = await this.getAll();
+
+		const index = lista.findIndex((carrito) => carrito.id == id);
+
+		let carrito = lista[index];
+
+		if (carrito) {
+			carrito.productos = carrito.productos.push(newProduct);
+			lista[index] = carrito;
+
+			await fs.promises.writeFile(this.ruta, JSON.stringify(lista, null, 2));
+			return await this.getById(id);
+		} else {
+			return null;
+		}
+	};
 }
+
 module.exports = Contenedor;
