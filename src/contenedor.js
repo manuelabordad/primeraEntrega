@@ -48,6 +48,7 @@ class Contenedor {
 	async getById(id) {
 		try {
 			const productos = await this.getAll();
+			console.log("carts", productos);
 
 			return (
 				productos.find((producto) => producto.id.toString() === id) || null
@@ -58,9 +59,19 @@ class Contenedor {
 	}
 	async deleteById(id) {
 		try {
-			const productos = await this.getAll();
-			const newArray = productos.filter(
-				(producto) => producto.id.toString() !== id
+			const objetos = await this.getAll();
+			const newArray = objetos.filter((objeto) => objeto.id.toString() !== id);
+			console.log("newArray", newArray);
+			await fs.promises.writeFile(this.ruta, JSON.stringify(newArray, null, 2));
+		} catch (error) {
+			return null;
+		}
+	}
+	async deleteById_prod(id_prod) {
+		try {
+			const objetos = await this.getAll();
+			const newArray = objetos.filter(
+				(objeto) => objeto.id_prod.toString() !== id_prod
 			);
 			console.log("newArray", newArray);
 			await fs.promises.writeFile(this.ruta, JSON.stringify(newArray, null, 2));
@@ -119,7 +130,7 @@ class Contenedor {
 		}
 	}
 
-	addProduct = async (id, newProduct) => {
+	addProduct = async (id, body) => {
 		let lista = await this.getAll();
 
 		const index = lista.findIndex((carrito) => carrito.id == id);
@@ -127,11 +138,11 @@ class Contenedor {
 		let carrito = lista[index];
 
 		if (carrito) {
-			carrito.productos = carrito.productos.push(newProduct);
+			carrito.productos.push(body);
 			lista[index] = carrito;
 
 			await fs.promises.writeFile(this.ruta, JSON.stringify(lista, null, 2));
-			return await this.getById(id);
+			return carrito;
 		} else {
 			return null;
 		}

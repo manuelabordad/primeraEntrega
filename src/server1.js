@@ -32,10 +32,11 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
 	const { body } = req;
-
-	await contenedor.save(body);
-
-	res.redirect("/");
+	if (await contenedor.save(body)) {
+		res.sendStatus(200);
+	} else {
+		res.sendStatus(500);
+	}
 });
 router.delete("/:id", async (req, res) => {
 	const { id } = req.params;
@@ -92,42 +93,37 @@ routerCart.delete("/:id", async (req, res) => {
 	}
 });
 
-router.post("/:id/productos", async (req, res) => {
+routerCart.post("/:id/productos", async (req, res) => {
 	const {
 		body,
 		params: { id },
 	} = req;
 
-	let anterior = await contenedorCarrito.getById(id);
+	let cart = await contenedorCarrito.getById(id);
 
-	anterior.productos = anterior.productos.push(body);
+	const newProduct = await contenedorCarrito.addProduct(id, body);
 
-	const nuevo = await contenedorCarrito.addProduct(id, body);
-
-	if (anterior) {
-		res.send({ anterior, nuevo });
+	if (cart) {
+		res.send({ cart, newProduct });
 	} else {
-		res.send("El producto que se intenta actualizar no existe.");
+		res.send("El producto no se puede agregar");
 	}
 });
-// routerCart.get("/:id/productos", async (req, res) => {
-// 	const { id } = req.params;
-// 	const byId = await contenedorCarrito.getById(id);
-// 	res.send(byId);
-// });
+routerCart.get("/:id/productos", async (req, res) => {
+	const { id } = req.params;
+	const byId = await contenedorCarrito.getById(id);
 
-// 	await contenedor.save(body);
+	res.send(byId);
+});
 
-// 	res.redirect("/");
-// });
-// router.delete("/:id/productos/:id_prod", async (req, res) => {
-// 	const { id } = req.params;
+router.delete("/:id/productos/:id_prod", async (req, res) => {
+	const { id_prod } = req.params;
 
-// 	const borrado = await contenedorCarrito.deleteById(id);
+	const borrado = await contenedorCarrito.deleteById_prod(id_prod);
 
-// 	if (borrado) {
-// 		res.send({ borrado });
-// 	} else {
-// 		res.send("El carrito buscado no existe.");
-// 	}
-// });
+	if (borrado) {
+		res.send({ borrado });
+	} else {
+		res.send("no se pudo eliminar el producto");
+	}
+});

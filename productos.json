@@ -1,68 +1,44 @@
 [
   {
-    "title": "miloja",
-    "price": 20000,
+    "title": "apple pie",
+    "price": 50000,
     "url": "url",
     "id": 1
   },
   {
-    "title": "carrito1",
-    "id": "[object Object]1"
+    "title": "carrot cake",
+    "price": 25000,
+    "url": "url",
+    "id": 3
   },
   {
-    "title": "carrito1",
-    "id": "[object Object]1"
+    "title": "cupcakes",
+    "price": 15000,
+    "url": "url",
+    "id": 4
   },
   {
-    "title": "carrito1",
-    "id": "[object Object]1"
+    "title": "cookies ",
+    "price": 5000,
+    "url": "url",
+    "id": 5
   },
   {
-    "title": "carrito1",
-    "id": "[object Object]1"
+    "title": "sweet bread",
+    "price": 12000,
+    "url": "url",
+    "id": 6
   },
   {
-    "title": "carrito1",
-    "id": "[object Object]1"
+    "title": "empanadas",
+    "price": 3000,
+    "url": "url",
+    "id": 7
   },
   {
-    "title": "carrito1",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito1",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito1",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito1",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito1",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito1",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito1",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito1",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito2",
-    "id": "[object Object]1"
-  },
-  {
-    "title": "carrito2",
-    "id": "[object Object]1"
+    "title": "buñuelos",
+    "price": 2000,
+    "url": "url",
+    "id": 8
   }
 ]
