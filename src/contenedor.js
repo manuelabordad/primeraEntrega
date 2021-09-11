@@ -48,7 +48,7 @@ class Contenedor {
 	async getById(id) {
 		try {
 			const objetos = await this.getAll();
-			console.log("carts", productos);
+			console.log("carts", objetos);
 
 			return objetos.find((objeto) => objeto.id.toString() === id) || null;
 		} catch (error) {
@@ -65,14 +65,21 @@ class Contenedor {
 			return null;
 		}
 	}
-	async deleteById_prod(id_prod) {
+	async deleteById_prod(id_prod, id) {
 		try {
-			const objetos = await this.getAll();
-			const newArray = objetos.filter(
-				(objeto) => objeto.id_prod.toString() !== id_prod
+			const carts = await this.getAll();
+			const cartIndex = carts.findIndex((cart) => cart.id == id);
+			const carrito = carts[cartIndex];
+
+			const productIndex = carrito.productos.findIndex(
+				(product) => product.id == id_prod
 			);
-			console.log("newArray", newArray);
-			await fs.promises.writeFile(this.ruta, JSON.stringify(newArray, null, 2));
+
+			carrito.productos.splice(productIndex, 1);
+
+			await fs.promises.writeFile(this.ruta, JSON.stringify(carts, null, 2));
+
+			return carrito;
 		} catch (error) {
 			return null;
 		}

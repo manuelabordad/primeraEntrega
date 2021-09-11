@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const routerCart = express.Router();
 
+const middleWare = require("./middleware");
+
 const Contenedor = require("./contenedor");
 const app = express();
 const port = 8080;
@@ -14,6 +16,7 @@ app.listen(port, () => {
 });
 
 app.use("/api/productos", router);
+app.use(middleWare.validateUser);
 
 const contenedor = new Contenedor("./productos.json");
 
@@ -116,13 +119,16 @@ routerCart.get("/:id/productos", async (req, res) => {
 	res.send(byId);
 });
 
-router.delete("/:id/productos/:id_prod", async (req, res) => {
-	const { id_prod } = req.params;
+routerCart.delete("/:id/productos/:id_prod", async (req, res) => {
+	const {
+		params: { id },
+		params: { id_prod },
+	} = req;
 
-	const borrado = await contenedorCarrito.deleteById_prod(id_prod);
+	const borrado = await contenedorCarrito.deleteById_prod(id_prod, id);
 
 	if (borrado) {
-		res.send({ borrado });
+		res.send({ cart: borrado });
 	} else {
 		res.send("no se pudo eliminar el producto");
 	}
