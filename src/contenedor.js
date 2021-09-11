@@ -47,12 +47,10 @@ class Contenedor {
 	}
 	async getById(id) {
 		try {
-			const productos = await this.getAll();
+			const objetos = await this.getAll();
 			console.log("carts", productos);
 
-			return (
-				productos.find((producto) => producto.id.toString() === id) || null
-			);
+			return objetos.find((objeto) => objeto.id.toString() === id) || null;
 		} catch (error) {
 			return null;
 		}
