@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const routerCart = express.Router();
-
-const middleWare = require("./middleware");
+const validateUser = require("./middleware");
 
 const Contenedor = require("./contenedor");
 const app = express();
@@ -16,7 +15,6 @@ app.listen(port, () => {
 });
 
 app.use("/api/productos", router);
-app.use(middleWare.validateUser);
 
 const contenedor = new Contenedor("./productos.json");
 
@@ -33,7 +31,7 @@ router.get("/:id", async (req, res) => {
 	res.send(byId);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateUser, async (req, res) => {
 	const { body } = req;
 	if (await contenedor.save(body)) {
 		res.sendStatus(200);
@@ -41,7 +39,7 @@ router.post("/", async (req, res) => {
 		res.sendStatus(500);
 	}
 });
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", validateUser, async (req, res) => {
 	const { id } = req.params;
 
 	const borrado = await contenedor.deleteById(id);
@@ -53,7 +51,7 @@ router.delete("/:id", async (req, res) => {
 	}
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", validateUser, async (req, res) => {
 	const {
 		body,
 		params: { id },

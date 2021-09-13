@@ -61,6 +61,7 @@ class Contenedor {
 			const newArray = objetos.filter((objeto) => objeto.id.toString() !== id);
 			console.log("newArray", newArray);
 			await fs.promises.writeFile(this.ruta, JSON.stringify(newArray, null, 2));
+			return newArray;
 		} catch (error) {
 			return null;
 		}

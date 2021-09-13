@@ -1,12 +1,10 @@
 async function validateUser(req, res, next) {
-	const admin = false; // O ponerle admin = false para probar si funciona
+	const admin = false;
 
 	if (admin) {
 		next();
 	} else {
 		res.status(401).send({ error: "Usuario no autorizado" });
-
-		//throw new Error("El usuario no es admin.");
 	}
 }
 
